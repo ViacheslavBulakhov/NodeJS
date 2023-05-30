@@ -20,11 +20,14 @@ const contactsPath = path.resolve("db/contacts.json");
  async function removeContact(contactId) {
     const contacts = await listContacts();
     
-    const newListContacts = contacts.filter(contact => contact.id !== contactId.toString())
+    const removedContact = contacts.findIndex((contact) => contact.id === contactId)
+    if( removedContact === -1) return null
+    
 
+    const newListContacts = contacts.filter(contact => contact.id !== contactId.toString())
     await fs.writeFile(contactsPath,JSON.stringify(newListContacts,null,2))
 
-    return newListContacts
+    return contacts[removedContact]
   }
   
  async function addContact(contact) {
